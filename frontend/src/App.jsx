@@ -133,9 +133,9 @@ const styles = `
   .gallery-section { background: #f2f0ea; padding: 5rem 1.5rem; }
   .gallery-section .sec-title { color: #0a1f0e; }
   .gallery-section .sec-label { color: #006847; }
-  .gallery { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 1.5rem; }
-  .gitem { border-radius: 6px; overflow: hidden; aspect-ratio: 4/3; position: relative; }
-  .gitem.big { grid-column: span 2; aspect-ratio: 16/9; }
+  .gallery { display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: auto auto; gap: 8px; margin-top: 1.5rem; }
+.gitem { border-radius: 6px; overflow: hidden; aspect-ratio: 4/3; position: relative; }
+.gitem.big { grid-column: span 2; grid-row: span 2; aspect-ratio: unset; }
   .gitem iframe { width: 100%; height: 100%; border: none; display: block; }
   .gph {
     width: 100%; height: 100%; display: flex;
@@ -237,8 +237,12 @@ export default function App() {
   useEffect(() => {
     if (expired || submitted) return;
     const t = setInterval(() => {
-      setTimeLeft(p => {
-        if (p <= 1) { clearInterval(t); setExpired(true); return 0; }
+      setTimeLeft((p) => {
+        if (p <= 1) {
+          clearInterval(t);
+          setExpired(true);
+          return 0;
+        }
         return p - 1;
       });
     }, 1000);
@@ -248,12 +252,18 @@ export default function App() {
   // Dots
   useEffect(() => {
     if (!dotsRef.current) return;
-    const colors = ["#006847","#CE1126","#C9A84C","#fff","#FFB612"];
+    const colors = ["#006847", "#CE1126", "#C9A84C", "#fff", "#FFB612"];
     for (let i = 0; i < 30; i++) {
       const d = document.createElement("div");
       d.className = "dot";
       const size = Math.random() * 7 + 3;
-      d.style.cssText = `width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;bottom:-20px;animation-duration:${Math.random()*6+5}s;animation-delay:${Math.random()*5}s;border-radius:${Math.random()>0.5?"50%":"2px"}`;
+      d.style.cssText = `width:${size}px;height:${size}px;background:${
+        colors[Math.floor(Math.random() * colors.length)]
+      };left:${Math.random() * 100}%;bottom:-20px;animation-duration:${
+        Math.random() * 6 + 5
+      }s;animation-delay:${Math.random() * 5}s;border-radius:${
+        Math.random() > 0.5 ? "50%" : "2px"
+      }`;
       dotsRef.current.appendChild(d);
     }
   }, []);
@@ -261,21 +271,32 @@ export default function App() {
   // Scroll reveal
   useEffect(() => {
     const els = document.querySelectorAll(".reveal");
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
-    }, { threshold: 0.15 });
-    els.forEach(el => obs.observe(el));
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add("visible");
+        });
+      },
+      { threshold: 0.15 }
+    );
+    els.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 
-  const fmt = s => `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
+  const fmt = (s) =>
+    `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(
+      2,
+      "0"
+    )}`;
   const pct = (timeLeft / TIMER_SECONDS) * 100;
-  const barColor = timeLeft <= 60 ? "#CE1126" : timeLeft <= 120 ? "#C9A84C" : "#006847";
+  const barColor =
+    timeLeft <= 60 ? "#CE1126" : timeLeft <= 120 ? "#C9A84C" : "#006847";
 
   const handleSubmit = async () => {
     setError("");
     if (!form.nombre.trim() || !form.telefono.trim()) {
-      setError("Por favor completa nombre y teléfono."); return;
+      setError("Por favor completa nombre y teléfono.");
+      return;
     }
     setLoading(true);
     try {
@@ -285,7 +306,8 @@ export default function App() {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.errors?.[0]?.msg || "Error al registrar");
+      if (!res.ok)
+        throw new Error(data.errors?.[0]?.msg || "Error al registrar");
       setSubmitted(true);
     } catch (e) {
       setError(e.message);
@@ -313,48 +335,68 @@ export default function App() {
         <div className="flags">
           <div className="flag">
             <div className="flag-img">
-              <div style={{flex:1,background:"#006847"}}/>
-              <div style={{flex:1,background:"#fff"}}/>
-              <div style={{flex:1,background:"#CE1126"}}/>
+              <div style={{ flex: 1, background: "#006847" }} />
+              <div style={{ flex: 1, background: "#fff" }} />
+              <div style={{ flex: 1, background: "#CE1126" }} />
             </div>
             <span>México</span>
           </div>
           <div className="vs-circle">VS</div>
           <div className="flag">
-            <div className="flag-img" style={{flexDirection:"column"}}>
-              <div style={{flex:1,background:"#007A4D"}}/>
-              <div style={{flex:"0 0 2px",background:"#000"}}/>
-              <div style={{flex:1,background:"#FFB612"}}/>
-              <div style={{flex:"0 0 2px",background:"#000"}}/>
-              <div style={{flex:1,background:"#DE3831"}}/>
-              <div style={{flex:"0 0 2px",background:"#000"}}/>
-              <div style={{flex:1,background:"#002395"}}/>
-              <div style={{flex:"0 0 2px",background:"#000"}}/>
-              <div style={{flex:1,background:"#007A4D"}}/>
+            <div className="flag-img" style={{ flexDirection: "column" }}>
+              <div style={{ flex: 1, background: "#007A4D" }} />
+              <div style={{ flex: "0 0 2px", background: "#000" }} />
+              <div style={{ flex: 1, background: "#FFB612" }} />
+              <div style={{ flex: "0 0 2px", background: "#000" }} />
+              <div style={{ flex: 1, background: "#DE3831" }} />
+              <div style={{ flex: "0 0 2px", background: "#000" }} />
+              <div style={{ flex: 1, background: "#002395" }} />
+              <div style={{ flex: "0 0 2px", background: "#000" }} />
+              <div style={{ flex: 1, background: "#007A4D" }} />
             </div>
             <span>Sudáfrica</span>
           </div>
         </div>
         <div className="date-row">
-          <div className="chip"><span className="chip-icon">📅</span> Miércoles 11 de Junio, 2026</div>
-          <div className="chip"><span className="chip-icon">🕐</span> 13:00 hrs CDMX</div>
-          <div className="chip"><span className="chip-icon">📍</span> Foro Sol · CDMX</div>
+          <div className="chip">
+            <span className="chip-icon">📅</span> Miércoles 11 de Junio, 2026
+          </div>
+          <div className="chip">
+            <span className="chip-icon">🕐</span> 16:00 hrs CDMX
+          </div>
+          <div className="chip">
+            <span className="chip-icon">📍</span> Estadio Azteca · CDMX
+          </div>
         </div>
-        <a className="cta" href="#registro">🎟 Registrarme ahora</a>
+        <a className="cta" href="#registro">
+          🎟 Registrarme Ahora
+        </a>
       </section>
 
       {/* INFO */}
       <section className="info-section">
         <div className="sec-inner">
           <div className="sec-label reveal">El Evento</div>
-          <h2 className="sec-title reveal">Todo lo que<br/>necesitas saber</h2>
+          <h2 className="sec-title reveal">
+            Todo lo que
+            <br />
+            necesitas saber
+          </h2>
           <div className="cards reveal">
             {[
-              {icon:"📅", val:"11 Jun 2026", lbl:"Fecha del partido"},
-              {icon:"🕐", val:"13:00 hrs", lbl:"Hora CDMX · Puertas 11:00"},
-              {icon:"📍", val:"Foro Sol", lbl:"CDMX · Cap. 5,000 personas"},
-              {icon:"🎟", val:"Gratis", lbl:"Registro obligatorio"},
-            ].map((c,i) => (
+              { icon: "📅", val: "11 Jun 2026", lbl: "Fecha del partido" },
+              {
+                icon: "🕐",
+                val: "16:00 hrs",
+                lbl: "Hora CDMX · Puertas 12:00",
+              },
+              {
+                icon: "📍",
+                val: "Estadio Azteca",
+                lbl: "CDMX · Cap. 5000 personas",
+              },
+              { icon: "🎟", val: "Gratis", lbl: "Registro obligatorio" },
+            ].map((c, i) => (
               <div className="card" key={i}>
                 <span className="card-icon">{c.icon}</span>
                 <div className="card-val">{c.val}</div>
@@ -363,7 +405,9 @@ export default function App() {
             ))}
           </div>
           <p className="info-note reveal">
-            Pantalla gigante · Zona de comida · Activaciones FIFA · Música en vivo<br/>
+            Pantalla gigante · Zona de comida · Activaciones FIFA · Música en
+            vivo
+            <br />
             Prohibido el acceso sin registro previo.
           </p>
         </div>
@@ -373,18 +417,26 @@ export default function App() {
       <section className="gallery-section">
         <div className="sec-inner">
           <div className="sec-label reveal">Galería</div>
-          <h2 className="sec-title reveal">La experiencia<br/>Fan Fest</h2>
+          <h2 className="sec-title reveal">
+            La experiencia
+            <br />
+            Fan Fest
+          </h2>
           <div className="gallery reveal">
             <div className="gitem big">
-              <iframe src="https://www.youtube.com/embed/6D3OqD3MnEI?rel=0&modestbranding=1" allowFullScreen title="FIFA Fan Fest" />
+              <iframe
+                src="https://www.youtube.com/embed/ELB35b8syOQ?rel=0&modestbranding=1"
+                allowFullScreen
+                title="FIFA Fan Fest"
+              />
             </div>
             {[
-              {bg:"#006847",icon:"🏆"},
-              {bg:"#CE1126",icon:"⚽"},
-              {bg:"#1a1a2e",icon:"👥"},
-              {bg:"#C9A84C",icon:"🎤"},
-            ].map((g,i) => (
-              <div className="gitem" key={i} style={{background:g.bg}}>
+              { bg: "#006847", icon: "🏆" },
+              { bg: "#CE1126", icon: "⚽" },
+              { bg: "#1a1a2e", icon: "👥" },
+              { bg: "#C9A84C", icon: "🎤" },
+            ].map((g, i) => (
+              <div className="gitem" key={i} style={{ background: g.bg }}>
                 <div className="gph">{g.icon}</div>
               </div>
             ))}
@@ -399,22 +451,47 @@ export default function App() {
           <h2 className="sec-title reveal">Asegura tu lugar</h2>
           {!submitted && !expired && (
             <div className="reveal">
-              <div className="timer-txt" style={{color: timeLeft <= 60 ? "#CE1126" : "#333"}}>
+              <div
+                className="timer-txt"
+                style={{ color: timeLeft <= 60 ? "#CE1126" : "#333" }}
+              >
                 ⏱ Tiempo para registrarte: {fmt(timeLeft)}
               </div>
               <div className="timer-bg">
-                <div className="timer-fill" style={{width:`${pct}%`, background: barColor}} />
+                <div
+                  className="timer-fill"
+                  style={{ width: `${pct}%`, background: barColor }}
+                />
               </div>
               <div className="fields">
-                <input type="text" placeholder="Nombre completo" value={form.nombre}
-                  onChange={e => setForm({...form, nombre: e.target.value})} />
-                <input type="tel" placeholder="Teléfono" value={form.telefono}
-                  onChange={e => setForm({...form, telefono: e.target.value})} />
-                <textarea placeholder="¿Algo que quieras decirnos?" value={form.mensaje}
-                  onChange={e => setForm({...form, mensaje: e.target.value})} />
+                <input
+                  type="text"
+                  placeholder="Nombre completo"
+                  value={form.nombre}
+                  onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+                />
+                <input
+                  type="tel"
+                  placeholder="Teléfono"
+                  value={form.telefono}
+                  onChange={(e) =>
+                    setForm({ ...form, telefono: e.target.value })
+                  }
+                />
+                <textarea
+                  placeholder="¿Algo que quieras decirnos?"
+                  value={form.mensaje}
+                  onChange={(e) =>
+                    setForm({ ...form, mensaje: e.target.value })
+                  }
+                />
               </div>
               {error && <p className="error-msg">{error}</p>}
-              <button className="btn-submit" onClick={handleSubmit} disabled={loading}>
+              <button
+                className="btn-submit"
+                onClick={handleSubmit}
+                disabled={loading}
+              >
                 {loading ? "Enviando..." : "🎟 Registrarme"}
               </button>
             </div>
@@ -422,7 +499,10 @@ export default function App() {
           {expired && !submitted && (
             <div className="expired reveal">
               <h3>⏰ Tiempo agotado</h3>
-              <p>El periodo de registro ha cerrado. Síguenos en redes para más info.</p>
+              <p>
+                El periodo de registro ha cerrado. Síguenos en redes para más
+                info.
+              </p>
             </div>
           )}
           {submitted && (
