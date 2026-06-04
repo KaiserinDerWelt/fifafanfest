@@ -1,7 +1,8 @@
 # 🏆 FIFA Fan Fest — México vs Sudáfrica · Mundial 2026
 
 Landing page interactiva para el Fan Fest oficial de la FIFA para el partido México vs Sudáfrica del 11 de junio de 2026.
-Prueba de tecnica para el puesto de Desarrollador Web - Mexico. MLA.
+Prueba técnica para el puesto de Desarrollador Web - Mexico. 
+Ingeniera de Software. Mariana Licona.
 
 ## Demo
 [https://fifafanfest.vercel.app](https://fifafanfest.vercel.app)
@@ -42,7 +43,7 @@ fifafanfest/
 | POST | `/api/registro` | Guarda un registro nuevo |
 | GET | `/api/registros` | Lista todos los registros |
 
-## 🗄 Base de datos
+## Base de datos
 
 ```sql
 CREATE TABLE registros (
@@ -77,7 +78,7 @@ npm install
 npm run dev
 ```
 
-## 🔑 Variables de entorno
+## Variables de entorno
 
 Crea un archivo `.env` en `/backend` basado en `.env.example`:
 
