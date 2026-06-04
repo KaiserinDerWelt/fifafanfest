@@ -334,32 +334,26 @@ export default function App() {
         <p className="hero-sub">Fan Fest Oficial · Mundial 2026</p>
         <div className="flags">
           <div className="flag">
-            <img
-              src="https://flagcdn.com/w80/mx.png"
-              alt="Bandera México"
-              style={{
-                width: "68px",
-                height: "44px",
-                borderRadius: "4px",
-                objectFit: "cover",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
-              }}
-            />
+            <div className="flag-img">
+              <div style={{flex:1,background:"#006847"}}/>
+              <div style={{flex:1,background:"#fff"}}/>
+              <div style={{flex:1,background:"#CE1126"}}/>
+            </div>
             <span>México</span>
           </div>
           <div className="vs-circle">VS</div>
           <div className="flag">
-            <img
-              src="https://flagcdn.com/w80/za.png"
-              alt="Bandera Sudáfrica"
-              style={{
-                width: "68px",
-                height: "44px",
-                borderRadius: "4px",
-                objectFit: "cover",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
-              }}
-            />
+            <div className="flag-img" style={{flexDirection:"column"}}>
+              <div style={{flex:1,background:"#007A4D"}}/>
+              <div style={{flex:"0 0 2px",background:"#000"}}/>
+              <div style={{flex:1,background:"#FFB612"}}/>
+              <div style={{flex:"0 0 2px",background:"#000"}}/>
+              <div style={{flex:1,background:"#DE3831"}}/>
+              <div style={{flex:"0 0 2px",background:"#000"}}/>
+              <div style={{flex:1,background:"#002395"}}/>
+              <div style={{flex:"0 0 2px",background:"#000"}}/>
+              <div style={{flex:1,background:"#007A4D"}}/>
+            </div>
             <span>Sudáfrica</span>
           </div>
         </div>
