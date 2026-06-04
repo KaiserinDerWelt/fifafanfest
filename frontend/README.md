@@ -1,16 +1,102 @@
-# React + Vite
+# 🏆 FIFA Fan Fest — México vs Sudáfrica · Mundial 2026
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Landing page interactiva para el Fan Fest oficial de la FIFA para el partido México vs Sudáfrica del 11 de junio de 2026.
+Prueba de tecnica para el puesto de Desarrollador Web - Mexico. MLA.
 
-Currently, two official plugins are available:
+## Demo
+[https://fifafanfest.vercel.app](https://fifafanfest.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📁 Estructura del proyecto
 
-## React Compiler
+```
+fifafanfest/
+├── frontend/          # React + Vite
+│   └── src/
+│       └── App.jsx
+└── backend/           # Node.js + Express
+    ├── index.js       # Servidor y rutas
+    ├── db.js          # Conexión MySQL
+    ├── schema.sql     # Estructura de la BD
+    └── .env.example
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Frontend
 
-## Expanding the ESLint configuration
+- React + Vite.
+- 3 secciones: Hero animado, Info del evento, Galería + Formulario.
+- Temporizador de 5 minutos para el registro.
+- Animaciones de entrada y scroll reveal.
+- Responsivo, moderno, futbolero.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Backend
+
+- Node.js + Express.
+- MySQL2 para la base de datos.
+- Express-validator para validaciones.
+- CORS habilitado.
+
+### Endpoints
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| POST | `/api/registro` | Guarda un registro nuevo |
+| GET | `/api/registros` | Lista todos los registros |
+
+## 🗄 Base de datos
+
+```sql
+CREATE TABLE registros (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  nombre      VARCHAR(100) NOT NULL,
+  telefono    VARCHAR(20)  NOT NULL,
+  mensaje     TEXT,
+  creado_en   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## Correr localmente
+
+### Base de datos
+```bash
+mysql -u root -p < backend/schema.sql
+```
+
+### Backend
+```bash
+cd backend
+cp .env.example .env
+# Edita .env con tus credenciales de MySQL
+npm install
+node index.js
+```
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 🔑 Variables de entorno
+
+Crea un archivo `.env` en `/backend` basado en `.env.example`:
+
+```
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=fifafanfest
+PORT=3001
+```
+
+## Tecnologias usadas
+
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | React 18 + Vite |
+| Backend | Node.js + Express |
+| Base de datos | MySQL |
+| Validaciones | express-validator |
+| Deploy frontend | Vercel |
+
+## Esta es otra creacion de KaiserinDerWelt. Another codebase from KaiserinDerWelt. Sigueme en X. Follow me. X:KaiserinDrWelt.
